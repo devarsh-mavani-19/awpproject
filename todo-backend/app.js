@@ -31,7 +31,10 @@ connectDatabase();
 
 // corss-origin-allow-all
 app.use(cors());
-
+app.use(function(req, res, next) {
+  console.log("request received ", req.url)
+  next()
+})
 // sets favicon in routes
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
@@ -50,13 +53,14 @@ app.get("/", (req, res) => {
 });
 
 // todos api routes
-app.use(process.env.APP_API_PREFIX, todos);
+console.log(process.env.APP_API_PREFIX)
+app.use("/api/v1", todos);
 
 // 404 - not found error handler
-app.use(notFoundRoute);
+// app.use(notFoundRoute);
 
 // error handler
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // app listens to defined port
 app.listen(process.env.APP_PORT, () => {
